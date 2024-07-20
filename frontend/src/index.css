@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom gradient text */
+@layer components {
+  .text-gradient {
+    background: linear-gradient(to bottom, #726e6e, #000000); /* white to 95% black */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+@layer components {
+    .extra-small {
+      font-size: 0.525rem; /* This is equivalent to 10px */
+    }
+  }
+
+  

@@ -1,9 +1,16 @@
-import React from 'react'
+import React from "react";
 
-const Button = () => {
+const Button = ({ text, bgColor, textColor, onClick, width }) => {
+  const borderClass = bgColor === "bg-white" ? "border border-gray-300" : "border-none";
+  
   return (
-    <button className=' px-3 text-nowrap  text-white font-semibold border rounded-md py-1  border-none bg-black' > Login</button>
-  )
-}
+    <button
+      onClick={onClick}
+      className={`px-3 ${width} text-nowrap font-semibold rounded-md py-1 ${bgColor} ${textColor} ${borderClass}`}
+    >
+      {text}
+    </button>
+  );
+};
 
-export default Button
+export default Button;
