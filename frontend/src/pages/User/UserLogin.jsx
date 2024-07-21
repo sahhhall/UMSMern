@@ -49,7 +49,7 @@ const UserLogin = () => {
         password: "",
       });
       navigate("/");
-      toast.success("welcome back");
+      toast.success(`welcome back ${res.name}`);
     } catch (err) {
       console.log(err.data?.message || err.error);
       setLoginError(err.data?.message);
