@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../components/common/Button";
 import Input from "../../components/common/Input";
 import TextDivider from "../../components/common/TextDivider";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useRegisterMutation } from "../../redux/slices/usersApiSlices";
+import { setAuthCredentials } from "../../redux/slices/authslice";
+import { toast } from "react-hot-toast";
+import { LoaderCircle } from "lucide-react";
 
 const UserSignup = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +22,14 @@ const UserSignup = () => {
     username: "",
     confirm: "",
   });
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.auth);
+  const [register, { isLoading, isSuccess, isError }] = useRegisterMutation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userInfo) navigate("/");
+  }, [navigate, userInfo]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -34,7 +47,7 @@ const UserSignup = () => {
         error = "Username must contain only characters";
       }
       if (value.trim() === "") {
-        error = "enter something"
+        error = "enter something";
       }
     } else if (name === "email") {
       if (!/\S+@\S+\.\S+/.test(value)) {
@@ -55,15 +68,51 @@ const UserSignup = () => {
     }));
   };
 
-  const navigate = useNavigate();
   const handleLoginNavigate = () => {
     navigate("/user/login");
+  };
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const { email, password, username, confirm } = formData;
+    if (!email || !password || !username || !confirm) {
+      setValidationErr({
+        username: !username ? "required" : "",
+        email: !email ? "required" : "",
+        password: !password ? "required" : "",
+        confirm: !confirm ? "required" : "",
+      });
+      return;
+    }
+    if (validationErr.username) return;
+    if (validationErr.email) return;
+    if (validationErr.password) return;
+    if (validationErr.confirm) return;
+
+    try {
+      const { username: name, email, password } = formData;
+      const res = await register({ name, email, password }).unwrap();
+      dispatch(setAuthCredentials({ ...res }));
+      setFormData({
+        username: "",
+        email: "",
+        password: "",
+      });
+      navigate("/");
+      toast.success(`welcome  ${res.name}`);
+    } catch (err) {
+      console.log(err.data?.message || err.error);
+      toast.error(err.data?.message || err.error);
+      setValidationErr({
+        email: true,
+        password: true,
+      });
+    }
   };
 
   return (
     <div className="w-full h-[97vh] flex flex-col justify-center items-center bg-gray-100">
       <h1 className="tracking-widest font-medium text-sm max-w-[310px] mb-4">
-        Sign in Stay updated on your professional world!!!
+        Register Stay updated on your professional world!!!
       </h1>
       <div className="w-[310px] h-[440px] border rounded-lg bg-white">
         <form className="flex w-full justify-center mt-4 flex-col items-center">
@@ -104,9 +153,18 @@ const UserSignup = () => {
           <div className="h-3"></div>
           <Button
             width="w-[260px]"
-            text="Register"
+            text={
+              isLoading ? (
+                <div className="flex animate-spin justify-center">
+                  <LoaderCircle />
+                </div>
+              ) : (
+                "Register"
+              )
+            }
             bgColor="bg-black"
             textColor="text-white"
+            onClick={handleRegister}
           />
           <TextDivider />
           <Button

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Button from "../../components/common/Button";
 import Input from "../../components/common/Input";
 import TextDivider from "../../components/common/TextDivider";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "../../redux/slices/usersApiSlices";
 import { setAuthCredentials } from "../../redux/slices/authslice";
@@ -26,9 +26,7 @@ const UserLogin = () => {
   useEffect(() => {
     if (userInfo) navigate("/");
   }, [navigate, userInfo]);
-  const handleRegister = async (e) => {
-    e.preventDefault();
-  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = formData;
@@ -38,7 +36,7 @@ const UserLogin = () => {
         password: !password ? "Password is required" : "",
       });
       return;
-    };
+    }
     try {
       const { email, password } = formData;
       console.log(email, password);
@@ -130,13 +128,14 @@ const UserLogin = () => {
             onClick={handleSubmit}
           />
           <TextDivider />
-          <Button
-            width="w-[260px]"
-            text="Register"
-            bgColor="bg-white"
-            textColor="text-black"
-            onClick={handleRegister}
-          />
+          <Link to={"/user/signup"}>
+            <Button
+              width="w-[260px]"
+              text="Register"
+              bgColor="bg-white"
+              textColor="text-black"
+            />
+          </Link>
         </form>
       </div>
     </div>

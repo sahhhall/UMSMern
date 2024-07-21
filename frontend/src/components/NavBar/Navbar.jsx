@@ -1,23 +1,27 @@
 import React from "react";
 import Button from "../common/Button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutAuth } from "../../redux/slices/authslice";
+import { useLogoutMutation } from "../../redux/slices/usersApiSlices";
 const Navbar = () => {
   const navItems = ["Showcase", "Docs", "Blog", "Template", "Enterprise"];
   const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
-  const dispatch  = useDispatch();
+  const dispatch = useDispatch();
   const handleLoginClick = () => {
     navigate("/user/login");
   };
-  const handeLogout = async() => {
+  const [logoutApi] = useLogoutMutation();
+  const handeLogout = async () => {
     try {
-      dispatch(logoutAuth())
+      await logoutApi().unwrap();
+      dispatch(logoutAuth());
+      navigate("/");
     } catch (err) {
-      alert(err)
+      alert(err);
     }
-  }
+  };
   return (
     <div className="w-full  flex justify-between  border-b-2  py-4 ps-4 pe-5">
       <div className="flex sm:w-50 items-center sm:gap-1 lg:gap-6">
@@ -45,12 +49,12 @@ const Navbar = () => {
         {userInfo ? (
           <div className="flex gap-2">
             <Link to="/user/profile">
-            <Button
-              onClick={null}
-              text="Profile"
-              bgColor="bg-white"
-              textColor="text-black"
-            />
+              <Button
+                onClick={null}
+                text="Profile"
+                bgColor="bg-white"
+                textColor="text-black"
+              />
             </Link>
             <Button
               onClick={handeLogout}
