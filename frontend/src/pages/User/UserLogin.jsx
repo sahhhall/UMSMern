@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "../../components/common/Button";
 import Input from "../../components/common/Input";
 import TextDivider from "../../components/common/TextDivider";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useLoginMutation } from "../../redux/slices/usersApiSlices";
+import { setAuthCredentials } from "../../redux/slices/authslice";
+import { LoaderCircle } from "lucide-react";
+import { toast } from "react-hot-toast";
 const UserLogin = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -12,14 +17,47 @@ const UserLogin = () => {
     email: "",
     password: "",
   });
+  const [loginError, setLoginError] = useState(null);
   const navigate = useNavigate();
-  const handleRegister = (e) => {
+  const dispatch = useDispatch();
+  const [login, { isLoading, isSuccess, isError }] = useLoginMutation();
+  const { userInfo } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (userInfo) navigate("/");
+  }, [navigate, userInfo]);
+  const handleRegister = async (e) => {
     e.preventDefault();
-    navigate("/user/signup");
   };
-  const handleLoginClick = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/");
+    const { email, password } = formData;
+    if (!email || !password) {
+      setValidationErr({
+        email: !email ? "Email is required" : "",
+        password: !password ? "Password is required" : "",
+      });
+      return;
+    };
+    try {
+      const { email, password } = formData;
+      console.log(email, password);
+      const res = await login({ email, password }).unwrap();
+      dispatch(setAuthCredentials({ ...res }));
+      setFormData({
+        email: "",
+        password: "",
+      });
+      navigate("/");
+      toast.success("welcome back");
+    } catch (err) {
+      console.log(err.data?.message || err.error);
+      setLoginError(err.data?.message);
+      setValidationErr({
+        email: true,
+        password: true,
+      });
+    }
   };
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -64,6 +102,11 @@ const UserLogin = () => {
             value={formData.password}
             error={validationErr.password}
           />
+          {loginError && (
+            <div className=" mt-0 w-full ms-14 text-red-600 text-xs">
+              {loginError}
+            </div>
+          )}
           <p className="w- text-center extra-small font-normal mt-4 ">
             By clicking Agree & Join or Continue, you agree to the LinkedIn
           </p>
@@ -73,10 +116,18 @@ const UserLogin = () => {
           <div className="h-3"></div>
           <Button
             width="w-[260px]"
-            text="Login"
+            text={
+              isLoading ? (
+                <div className="flex animate-spin justify-center">
+                  <LoaderCircle />
+                </div>
+              ) : (
+                "Login"
+              )
+            }
             bgColor="bg-black"
             textColor="text-white"
-            onClick={handleLoginClick}
+            onClick={handleSubmit}
           />
           <TextDivider />
           <Button
