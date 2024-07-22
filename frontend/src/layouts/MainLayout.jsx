@@ -8,7 +8,7 @@ const MainLayout = () => {
   const routesWithoutNavbar = [
     '/user/login',
     '/user/signup',
-    '/admin/login',
+    '/admin',
   ];
   const shouldHideNavbar = routesWithoutNavbar.includes(pathname);
 

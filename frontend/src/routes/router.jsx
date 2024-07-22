@@ -12,6 +12,7 @@ import Home from "../pages/Home";
 import MainLayout from "../layouts/MainLayout";
 import UserProfileSkelton from "../components/UserProfileSkelton";
 import ProtectedRoute from "./ProtectedRoute";
+import AdminProtectedRoute from "./AdminProtectedRoute";
 
 const routes = createBrowserRouter([
   {
@@ -19,8 +20,15 @@ const routes = createBrowserRouter([
     element: <MainLayout />,
     children: [
       { path: "", element: <Home /> },
-      { path: "admin", element: <AdminDashBoard /> },
-      { path: "admin/login", element: <AdminLogin /> },
+      { path: "admin", element: <AdminLogin /> },
+      {
+        path: 'admin/home',
+        element: (
+          <AdminProtectedRoute>
+            <AdminDashBoard />
+          </AdminProtectedRoute>
+        ),
+      },
       {
         path: "user/profile",
         element: (

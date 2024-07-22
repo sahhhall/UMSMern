@@ -83,10 +83,7 @@ const UserSignup = () => {
       });
       return;
     }
-    if (validationErr.username) return;
-    if (validationErr.email) return;
-    if (validationErr.password) return;
-    if (validationErr.confirm) return;
+    if (Object.values(validationErr).some((err) => err)) return;
 
     try {
       const { username: name, email, password } = formData;
@@ -104,7 +101,6 @@ const UserSignup = () => {
       toast.error(err.data?.message || err.error);
       setValidationErr({
         email: true,
-        password: true,
       });
     }
   };

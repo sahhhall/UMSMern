@@ -16,7 +16,7 @@ const authAdmin = asyncHandler(async (req, res) => {
       .json({ message: "No admin found with the provided email" });
   }
 
-  const isPasswordCorrect = bcrypt.compare(password, admin.password);
+  const isPasswordCorrect = await bcrypt.compare(password, admin.password);
   if (!isPasswordCorrect) {
     return res.status(401).json({ message: "Incorrect password" });
   }
