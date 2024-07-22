@@ -97,10 +97,9 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @access PRIVATE
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
-  const { image } = req.body;
   if (user) {
-    if (image) {
-      const uploadResponse = await cloudinary.uploader.upload(image, {
+    if (req.body.profileImg) {
+      const uploadResponse = await cloudinary.uploader.upload(req.body.profileImg, {
         upload_preset: "ums",
       });
       user.profileImg = uploadResponse.secure_url; 
