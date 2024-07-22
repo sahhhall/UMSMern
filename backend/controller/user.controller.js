@@ -2,6 +2,7 @@ import asyncHandler from "express-async-handler";
 import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
 import generateToken from "../utils/generateToken.js";
+import cloudinary from "../utils/cloudinary.js";
 // @desc Auth user/set token
 // route POST api/users/auth
 // @access PUBLIC
@@ -25,6 +26,7 @@ const authUser = asyncHandler(async (req, res) => {
     _id: user._id,
     name: user.name,
     email: user.email,
+    profileImg: user.profileImg
   });
 });
 
@@ -59,6 +61,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      profileImg: user.profileImg
     });
   } else {
     res.status(400);
@@ -94,8 +97,15 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @access PRIVATE
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
-
+  const { image } = req.body;
   if (user) {
+    if (image) {
+      const uploadResponse = await cloudinary.uploader.upload(image, {
+        upload_preset: "ums",
+      });
+      user.profileImg = uploadResponse.secure_url; 
+      console.log(uploadResponse,"updsfd")
+    }
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
 
@@ -109,6 +119,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
+      profileImg: updatedUser.profileImg,
     });
   } else {
     res.status(404);

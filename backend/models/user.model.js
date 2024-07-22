@@ -20,6 +20,10 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
+    profileImg: {
+      type: String,
+      default: "https://x.com/tndlawal/status/1775541329621094687/photo/1", 
+    },
   },
   {
     timestamps: true,
