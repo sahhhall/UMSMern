@@ -22,7 +22,7 @@ const userSchema = mongoose.Schema(
     },
     profileImg: {
       type: String,
-      default: "https://x.com/tndlawal/status/1775541329621094687/photo/1", 
+      default: "http://res.cloudinary.com/dgvcq2pqp/image/upload/v1707553607/lkdfahktdxo4n99wrvqh.jpg", 
     },
   },
   {

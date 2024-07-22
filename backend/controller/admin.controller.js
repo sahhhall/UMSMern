@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import asyncHandler from "express-async-handler";
 import User from "../models/user.model.js";
 import generateToken from "../utils/generateToken.js";
+import cloudinary from "../utils/cloudinary.js";
 
 // @desc Auth admin/set token
 // route POST api/admin/
@@ -66,17 +67,20 @@ const createUser = asyncHandler(async (req, res) => {
   }
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
-
+  if (req.body.image) {
+    var uploadResponse = await cloudinary.uploader.upload(req.body.image, {
+      upload_preset: "ums",
+    });
+  }
   const user = await User.create({
     name,
     email,
     password: hashedPassword,
+    profileImg:uploadResponse && uploadResponse?.secure_url 
   });
   if (user) {
     res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
+     message: "user successfully created"
     });
   } else {
     res.status(400);
@@ -135,7 +139,13 @@ const updateUser = asyncHandler(async (req, res) => {
 // @access PRIVATE/ADMIN
 const deleteUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  res.status(200).json({ message: " deleted user " });
+  const user = await User.findById(id);
+  if (!user) {
+    res.status(404);
+    throw new Error("something went wrong");
+  }
+  await User.findByIdAndDelete(id);
+  res.status(200).json({ message: " user deleted successfully " });
 });
 
 export {
