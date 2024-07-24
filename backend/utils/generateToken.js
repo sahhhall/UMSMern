@@ -1,9 +1,11 @@
 import JWT from "jsonwebtoken";
 
-const generateAccessToken = (res, userId) => {
+const generateAccessToken = (res, userId, role) => {
+  console.log(role)
   try {
     const payload = {
       id: userId,
+      role
     };
     const secret = process.env.ACCESS_TOKEN_SECRET;
     const options = {
@@ -11,7 +13,7 @@ const generateAccessToken = (res, userId) => {
       issuer: "sahal.com",
     };
     const token = JWT.sign(payload, secret, options);
-    res.cookie("JWT", token, {
+    res.cookie(role, token, {
       httpOnly: true,
       secure: process.env.NODE_ENV !== "development",
       sameSite: "strict",

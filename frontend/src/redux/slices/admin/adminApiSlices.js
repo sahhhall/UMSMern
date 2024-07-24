@@ -27,10 +27,30 @@ const adminApiSlice = apislice.injectEndpoints({
       query: (data) => ({
         url: `${ADMIN_URL}/users`,
         method: "POST",
-        body: data
-      })
-    })
+        body: data,
+      }),
+    }),
+    edituser: builder.mutation({
+      query: ({data, id}) => ({
+        url: `${ADMIN_URL}/users/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    logoutadmin: builder.mutation({
+      query: () => ({
+        url: `${ADMIN_URL}/logout`,
+        method: "POST",
+      }),
+    }),
   }),
 });
 
-export const { useAuthadminMutation, useFetchusersQuery, useDeleteuserMutation, useCreateuserMutation } = adminApiSlice;
+export const {
+  useAuthadminMutation,
+  useFetchusersQuery,
+  useDeleteuserMutation,
+  useCreateuserMutation,
+  useEdituserMutation,
+  useLogoutadminMutation
+} = adminApiSlice;

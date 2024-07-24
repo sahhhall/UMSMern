@@ -8,14 +8,14 @@ import {
   fetchUsers,
   logoutAdmin,
 } from "../controller/admin.controller.js";
-import { protectedAuth } from "../middlewares/auth.middleware.js";
+import { adminAuth } from "../middlewares/adminAuth.middleware.js";
 
 router.post("/", authAdmin);
-router.post("/logout", logoutAdmin)
-router.route("/users").get(protectedAuth,fetchUsers).post(protectedAuth,createUser);
+router.post("/logout", logoutAdmin);
+router.route("/users").get(adminAuth, fetchUsers).post(adminAuth, createUser);
 router
   .route("/users/:id")
-  .put(protectedAuth, updateUser)
-  .delete(protectedAuth, deleteUser);
+  .put(adminAuth, updateUser)
+  .delete(adminAuth, deleteUser);
 
 export default router;

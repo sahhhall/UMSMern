@@ -9,7 +9,7 @@ const store = configureStore({
         [apislice.reducerPath] : apislice.reducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apislice.middleware),
-    devTools: true
+    devTools: process.env.NODE_ENV !== 'production'
 });
 
 export default store;

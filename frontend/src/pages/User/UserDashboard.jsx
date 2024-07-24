@@ -125,7 +125,7 @@ const UserDashboard = () => {
           <img
             className={` ${
               editProfile && isLoading && "animate-pulse"
-            }  object-cover absolute bottom-[-50px] left-[3%] w-[100px] h-[100px] rounded-full border-2 border-white cursor-pointer`}
+            } bg-white object-cover absolute bottom-[-50px] left-[3%] w-[100px] h-[100px] rounded-full border-2 border-white cursor-pointer`}
             src={user.profileImg}
             alt="avatar"
             onClick={triggerFileInput}

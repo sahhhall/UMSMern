@@ -3,6 +3,7 @@ import UserList from "../../components/UserList";
 import Button from "../../components/common/Button";
 import { useFetchusersQuery } from "../../redux/slices/admin/adminApiSlices";
 import AddUser from "../../components/Admin/AddUser";
+import AdminNav from "../../components/Admin/AdminNav";
 
 const AdminDashBoard = () => {
   const { data: usersData, isLoading, error, refetch } = useFetchusersQuery();
@@ -15,18 +16,19 @@ const AdminDashBoard = () => {
 
   const filteredUsers = useMemo(() => {
     if (!usersData || !usersData.usersData) return [];
-    return usersData.usersData.filter(user =>
+    return usersData?.usersData?.filter(user =>
       user.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [usersData, searchTerm]);
 
-  return (
-    <div className="w-full h-screen flex flex-col items-center bg-gray-100">
-      <div className="flex justify-end items-end w-full max-w-4xl p-4 gap-8">
+  return (<>
+  <AdminNav/>
+  <div className="w-full h-screen flex flex-col items-center bg-gray-100">
+      <div className="flex justify-end items-end w-full max-w-4xl p-4 gap-4">
         <input
           type="text"
           onChange={handleSearch}
-          className="border rounded px-2 py-1"
+          className="px-6  border rounded-md py-1 bg-gray-100"
           placeholder="Search users..."
           value={searchTerm}
         />
@@ -45,6 +47,8 @@ const AdminDashBoard = () => {
         )}
       </div>
     </div>
+  </>
+    
   );
 };
 

@@ -12,6 +12,7 @@ const setCredentials = (state, action) => {
   localStorage.setItem("userInfo", JSON.stringify(action.payload));
 };
 
+//action reduceers
 const logout = (state) => {
   state.userInfo = null;
   localStorage.removeItem("userInfo");

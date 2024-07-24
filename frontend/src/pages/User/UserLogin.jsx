@@ -37,6 +37,7 @@ const UserLogin = () => {
       });
       return;
     }
+    if (validationErr.email) return
     try {
       const { email, password } = formData;
       console.log(email, password);

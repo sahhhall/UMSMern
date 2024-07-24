@@ -3,8 +3,7 @@ import asyncHandler from "express-async-handler";
 import User from "../models/user.model.js";
 
 const protectedAuth = asyncHandler(async (req, res, next) => {
-  const token = req.cookies.JWT;
-
+  const token = req.cookies.userJWT;
   if (!token) {
     return res.status(401).json({ message: "Unauthorized - No token found" });
   }

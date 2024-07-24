@@ -21,7 +21,7 @@ const authAdmin = asyncHandler(async (req, res) => {
   if (!isPasswordCorrect) {
     return res.status(401).json({ message: "Incorrect password" });
   }
-  generateToken(res, admin._id);
+  generateToken(res, admin._id, "adminJWT");
   res.status(200).json({
     _id: admin._id,
     name: admin.name,
@@ -33,7 +33,7 @@ const authAdmin = asyncHandler(async (req, res) => {
 // route POST api/admin/logout
 // @access PRIVATE
 const logoutAdmin = asyncHandler(async (req, res) => {
-  res.cookie("JWT", "", {
+  res.cookie("adminJWT", "", {
     httpOnly: true,
     expires: new Date(0),
   });
@@ -94,7 +94,7 @@ const createUser = asyncHandler(async (req, res) => {
 const updateUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { name, email } = req.body;
-
+  console.log("fuck")
   try {
     const user = await User.findById(id);
 
@@ -107,6 +107,12 @@ const updateUser = asyncHandler(async (req, res) => {
       email,
       _id: { $ne: user._id },
     });
+    if (req.body.profileImg) {
+      const uploadResponse = await cloudinary.uploader.upload(req.body.profileImg, {
+        upload_preset: "ums",
+      });
+      user.profileImg = uploadResponse.secure_url; 
+    }
 
     if (userNameExists) {
       res.status(400);

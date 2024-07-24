@@ -35,6 +35,7 @@ const AdminLogin = () => {
       });
       return;
     }
+    if (validationErr.email) return
     try {
       const { email, password } = formData;
       const res = await adminlogin({ email, password }).unwrap();
