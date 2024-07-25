@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast";
 import { Pen } from "lucide-react";
 
 const UserList = ({ user, refetch }) => {
-  const [deleting, setDeleting] = useState(false);
+  // const [deleting, setDeleting] = useState(false);
   const [editingName, setEditingName] = useState(false);
   const [editProfile, setEditProfile] = useState(false);
   const [updatedPic, setUpdatedPic] = useState(null);
@@ -71,15 +71,17 @@ const UserList = ({ user, refetch }) => {
       return;
     }
     try {
-      setEditingName(false);
+      
       const res = await editUser({
         data: { name: value },
         id: user._id,
       }).unwrap();
       if (refetch) refetch();
+      setEditingName(false);
       toast.success("Name updated successfully");
     } catch (err) {
-      toast.error(err?.data?.message || err);
+      toast.error(err?.data?.error || err);
+      console.log(err?.data?.error)
     }
   };
 
@@ -117,9 +119,9 @@ const UserList = ({ user, refetch }) => {
 
   const handleDelete = async () => {
     try {
-      setDeleting(true);
+      // setDeleting(true);
       await deleteUser(user._id).unwrap();
-      setDeleting(false);
+      // setDeleting(false);
       setShowModal(false);
       if (refetch) refetch();
       toast.success("User deleted successfully");

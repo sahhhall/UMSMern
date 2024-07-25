@@ -115,12 +115,12 @@ const updateUser = asyncHandler(async (req, res) => {
     }
 
     if (userNameExists) {
-      res.status(400);
+      res.status(409);
       throw new Error("Username already exists");
     }
 
     if (userEmailExists) {
-      res.status(400);
+      res.status(409);
       throw new Error("Email already exists");
     }
     user.name = name || user.name;

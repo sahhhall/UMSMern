@@ -13,6 +13,7 @@ import MainLayout from "../layouts/MainLayout";
 import UserProfileSkelton from "../components/UserProfileSkelton";
 import ProtectedRoute from "./ProtectedRoute";
 import AdminProtectedRoute from "./AdminProtectedRoute";
+import NotFound from "../pages/NotFound";
 
 const routes = createBrowserRouter([
   {
@@ -41,9 +42,9 @@ const routes = createBrowserRouter([
       },
       { path: "user/login", element: <UserLogin /> },
       { path: "user/signup", element: <UserSIgnup /> },
-      // { path: '*', element: <NotFound /> },
     ],
   },
+  { path: '*', element: <NotFound /> },
 ]);
 
 export default routes;

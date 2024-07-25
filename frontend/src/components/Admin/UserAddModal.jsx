@@ -12,7 +12,7 @@ const UserAddModal = ({ setShowModal, showModal,  refetch }) => {
     password: "",
     image: "",
   });
-  const [displayImg, setDisplayImg] = useState("http://res.cloudinary.com/dgvcq2pqp/image/upload/v1707553607/lkdfahktdxo4n99wrvqh.jpg")
+  const [displayImg, setDisplayImg] = useState("https://res.cloudinary.com/dgvcq2pqp/image/upload/v1721793270/uqvcsuskdxsvhule9rqh.png")
   const [validationErr, setValidationErr] = useState({
     email: "",
     password: "",

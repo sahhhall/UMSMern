@@ -5,10 +5,10 @@ const Home = () => {
   return (
     <div className="h-[71vh] flex items-center  justify-center flex-col">
       <h1 className="text-6xl text-gradient  font-extrabold">
-        The React Framework for the Web
+        The User Mangagment for the Web
       </h1>
       <h3 className="text-gray-400 text-xl font-normal mt-9">
-        Used by some of the world's largest companies, Next.js enables you to
+        Used by some of the world's largest companies, UMS enables you to
         create
       </h3>
       <h3 className="text-gray-400 text-xl font-normal">

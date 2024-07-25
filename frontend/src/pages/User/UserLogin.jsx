@@ -53,7 +53,6 @@ const UserLogin = () => {
       console.log(err.data?.message || err.error);
       setLoginError(err.data?.message);
       setValidationErr({
-        email: true,
         password: true,
       });
     }

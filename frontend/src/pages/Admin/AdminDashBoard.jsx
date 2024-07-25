@@ -12,13 +12,19 @@ const AdminDashBoard = () => {
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
+  console.log(usersData)
 
 
   const filteredUsers = useMemo(() => {
     if (!usersData || !usersData.usersData) return [];
     return usersData?.usersData?.filter(user =>
-      user.name.toLowerCase().includes(searchTerm.toLowerCase())
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) || user.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
+    // const userdata = usersData?.usersData?.filter((user)=> {
+    //  let userda =  user.email;
+    //  return userda.includes(searchTerm.toLowerCase())
+    // })
+    // return userdata
   }, [usersData, searchTerm]);
 
   return (<>
